@@ -4,6 +4,9 @@ from flask import g, render_template, Flask, request, redirect, session
 from datetime import timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-key-change-this-in-prod')
