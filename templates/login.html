@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FarmWorld/Login</title>
+<style>
+  :root {
+    --bg: #000;
+    --fg: #fff;
+    --line: #333;
+    --line-strong: #fff;
+    --dim: #888;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    padding: 20px;
+  }
+
+  form {
+    width: min(360px, 100%);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: clamp(28px, 6vw, 40px) clamp(24px, 5vw, 36px);
+  }
+
+  .switch-link {
+    width: min(360px, 100%);
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: var(--dim);
+  }
+
+  .switch-link a {
+    color: #4da3ff;
+    text-decoration: underline;
+  }
+
+  .heading {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    font-size: clamp(1.3rem, 4vw, 1.6rem);
+    font-weight: 600;
+    margin: 0 0 32px;
+  }
+
+  .cursor {
+    width: 0.5em;
+    height: 1em;
+    background: var(--fg);
+    animation: blink 1s steps(1) infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .field { margin-top: 20px; }
+  .field:first-of-type { margin-top: 0; }
+
+  label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--dim);
+    margin-bottom: 6px;
+  }
+
+  input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 12px 14px;
+    color: var(--fg);
+    font-family: inherit;
+    font-size: 16px;
+    transition: border-color 0.12s ease;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--line-strong);
+  }
+
+  button {
+    width: 100%;
+    margin-top: 28px;
+    padding: 13px;
+    background: transparent;
+    border: 1px solid var(--fg);
+    border-radius: 2px;
+    color: var(--fg);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease, transform 0.08s ease;
+  }
+
+  button:hover { background: var(--fg); color: var(--bg); }
+  button:active { transform: scale(0.97); }
+  button:focus-visible { outline: 2px dashed var(--fg); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  @media (max-width: 380px) {
+    form { padding: 24px 18px; }
+  }
+</style>
+</head>
+<body>
+  <form id="login-form" action="/login" method="POST">
+    <p class="heading">Login<span class="cursor"></span></p>
+
+    {% if error %}
+      <p class="heading"> {{ error }}</p> 
+    {% endif %}
+
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="username" required autofocus>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+    </div>
+
+    <button type="submit">Login</button>
+  </form>
+  <div class="switch-link">
+    Don't have an account? <a href="/registeration">Register</a>
+  </div>
+
+</body>
+</html>
