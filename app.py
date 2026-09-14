@@ -1,7 +1,7 @@
 import psycopg2
 import psycopg2.extras
 from flask import g, render_template, Flask, request, redirect, session
-from datetime import timedelta
+from datetime import timedelta, datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from dotenv import load_dotenv
@@ -16,7 +16,7 @@ def get_db():
     if 'db' not in g:
         g.db = psycopg2.connect(
             os.environ.get('DATABASE_URL'),
-            cursor_factory=psycopg2.extras.RealDictCursor
+            cursor_factory=psycopg2.extras.RealDictCursor #every cursor fetch return a dict
         )
     return g.db
 
@@ -30,18 +30,41 @@ app.teardown_appcontext(close_db)
 def authentication(username, password):
     db = get_db()
     cur = db.cursor()
-    cur.execute("SELECT username, password_hash FROM users WHERE username = %s", (username,))
-    user = cur.fetchone()
-    cur.close()
+    cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+    user = cur.fetchone() # returns a dict as cursorFactory is set to RealDictCursor
 
-    if user and check_password_hash(user['password_hash'], password):
+    if not user:
+        cur.close()
+        return False
+
+    if user['locked_until'] and user['locked_until'] > datetime.now(timezone.utc):
+        cur.close()
+        return False
+
+    if check_password_hash(user['password_hash'], password):
+        cur.execute(
+            "UPDATE users SET failed_login_attempts = 0, locked_until = NULL WHERE username = %s",
+            (username,)
+        )
+        db.commit()
+        cur.close()
         session.permanent = True
         session['username'] = user['username']
         return redirect('/skyWorld')
-    
-    return False
-        
+    else:
+        attempts = user['failed_login_attempts'] + 1
+        locked_until = None
+        if attempts >= 5:
+            locked_until = datetime.now(timezone.utc) + timedelta(minutes=15)
+        cur.execute(
+            "UPDATE users SET failed_login_attempts = %s, locked_until = %s WHERE username = %s",
+            (attempts, locked_until, username)
+        )
+        db.commit()
+        cur.close()
+        return False
 
+    
 def registeration(username, password):
     password_hash = generate_password_hash(password)
     db = get_db()
