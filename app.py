@@ -66,6 +66,7 @@ def authentication(username, password):
 
     
 def registeration(username, password):
+    
     password_hash = generate_password_hash(password)
     db = get_db()
     cur = db.cursor()
@@ -108,7 +109,11 @@ def register():
 
         if not username or not password:
             return render_template('register.html', error='username and password must be filled')
-        
+        if len(password) < 8:
+            return render_template('register.html', error='password must be 8 character long')
+        if ' ' in username or username != username.strip():
+            return render_template('register.html', error='username cannot contain space')
+ 
         result = registeration(username, password)
 
         if result:
