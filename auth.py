@@ -29,7 +29,7 @@ def authentication(username, password):
         cur.close()
         session.permanent = True
         session['username'] = user['username']
-        return redirect('/skyWorld')
+        return redirect('/skyWorld_hub')
     else:
         attempts = user['failed_login_attempts'] + 1
         locked_until = None
