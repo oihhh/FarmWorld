@@ -1,3 +1,5 @@
+import { handle_player_controls } from "./player_movement.js";
+
 class skyWorld_hub extends Phaser.Scene {
     constructor() {
         super('skyWorld_hub');
@@ -7,10 +9,14 @@ class skyWorld_hub extends Phaser.Scene {
         this.load.image('player_down', '/static/assets/player_down.png');
         this.load.image('player_up', '/static/assets/player_up.png');
         this.load.image('player_left', '/static/assets/player_left.png');
+        this.load.image('spawn_rune_circle', '/static/assets/spawn_rune_circle.png')
+        this.load.image('skyWorld_hub_frame', '/static/assets/skyWorld_hub_frame.png')
     }
 
     create() {
-        this.player = this.physics.add.sprite(100, 100, 'player_down');
+        this.add.image(750, 750, 'skyWorld_hub_frame')
+        this.add.image(750, 750, 'spawn_rune_circle')
+        this.player = this.physics.add.sprite(750, 730, 'player_down');
 
         this.physics.world.setBounds(0, 0, 1500, 1500);
         this.cameras.main.setBounds(0, 0, 1500, 1500);
@@ -23,33 +29,15 @@ class skyWorld_hub extends Phaser.Scene {
 
         this.maxSpeed = 200;
         this.smoothing = 8;
+
+        //player bobbing animation variables
+        this.bobTimer = 0;
+        this.baseScaleY = 1;
+        this.baseScaleX = 1;
     }
 
     update(time, delta) {
-        const dt = delta/1000;
-
-        let targetX = 0;
-        let targetY = 0;
-
-        if (this.cursors.left.isDown) targetX = -1;
-        if (this.cursors.right.isDown) targetX = 1;
-        if (this.cursors.up.isDown) targetY = -1;
-        if (this.cursors.down.isDown) targetY = 1;
-
-        this.inputVector.x = Phaser.Math.Linear(
-            this.inputVector.x, targetX, 1 - Math.pow(1 - this.smoothing * dt, 1)
-        );
-        this.inputVector.y = Phaser.Math.Linear(
-            this.inputVector.y, targetY, 1 - Math.pow(1 - this.smoothing * dt, 1)
-        );
-
-        let vec = new Phaser.Math.Vector2(this.inputVector.x, this.inputVector.y);
-        if (vec.length() > 1) vec.normalize();
-
-        this.player.setVelocity(vec.x * this.maxSpeed, vec.y * this.maxSpeed);
-
-
-
+        handle_player_controls(this, delta);
     } 
 }
 
