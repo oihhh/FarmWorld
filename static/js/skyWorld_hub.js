@@ -1,4 +1,5 @@
 import { handle_player_controls } from "./player_movement.js";
+import { setupSocket, socket } from "./socket_connection.js"
 
 class skyWorld_hub extends Phaser.Scene {
     constructor() {
@@ -14,6 +15,8 @@ class skyWorld_hub extends Phaser.Scene {
     }
 
     create() {
+
+        setupSocket(this);
         this.add.image(750, 750, 'skyWorld_hub_frame')
         this.add.image(750, 750, 'spawn_rune_circle')
         this.player = this.physics.add.sprite(750, 730, 'player_down');
@@ -34,10 +37,23 @@ class skyWorld_hub extends Phaser.Scene {
         this.bobTimer = 0;
         this.baseScaleY = 1;
         this.baseScaleX = 1;
+
+        this.last_emit = 0;
+        this.playerDirection = 'down'
     }
 
     update(time, delta) {
-        handle_player_controls(this, delta);
+        handle_player_controls(this, delta); //imported from player_movement.js 
+        
+        if (time - this.last_emit > 50) {
+            socket.emit('update_clients_data', {
+                x: this.player.x,
+                y: this.player.y,
+                direction: this.playerDirection
+            });
+            this.last_emit = time;
+        }
+        
     } 
 }
 

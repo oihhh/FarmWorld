@@ -6,6 +6,7 @@ from db import get_db
 
 auth_bp = Blueprint('auth', __name__)
 
+
 def authentication(username, password):
     db = get_db()
     cur = db.cursor()

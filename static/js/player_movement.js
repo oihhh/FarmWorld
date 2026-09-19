@@ -1,21 +1,8 @@
 export function handle_player_controls(scene, delta) {
-    const dt = delta/1000;
+    const dt = delta / 1000;
 
     let targetX = 0;
     let targetY = 0;
-
-    const isMoving = (targetX !== 0 || targetY !== 0);
-    const bobSpeed = isMoving ? 0.02 : 0.008;
-    const bobAmount = isMoving ? 0.08 : 0.03;
-
-    scene.bobTimer += delta * bobSpeed;
-
-    const bob = Math.sin(scene.bobTimer) * bobAmount;
-
-    scene.player.setScale(
-        scene.baseScaleX - bob,
-        scene.baseScaleY + bob
-    );
 
     if (scene.cursors.left.isDown) targetX = -1;
     if (scene.cursors.right.isDown) targetX = 1;
@@ -37,10 +24,13 @@ export function handle_player_controls(scene, delta) {
     if (targetX !== 0 || targetY !== 0) {
         if (Math.abs(targetX) > Math.abs(targetY)) {
             scene.player.setTexture('player_left');
-            scene.player.setFlipX(targetX > 0); // true = mirrored = facing right
+            scene.player.setFlipX(targetX > 0);
+            scene.playerDirection = targetX > 0 ? 'right' : 'left';
         } else {
             scene.player.setTexture(targetY < 0 ? 'player_up' : 'player_down');
-            scene.player.setFlipX(false); // reset mirroring for up/down sprites
+            scene.player.setFlipX(false);
+            scene.playerDirection = targetY < 0 ? 'up' : 'down';
         }
     }
+    // if targetX and targetY are both 0, playerDirection just keeps its last value — correct, matches "facing last direction while idle"
 }

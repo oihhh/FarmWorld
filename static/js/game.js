@@ -8,7 +8,7 @@ const config = {
         default: 'arcade',
         arcade: {
             debug: true
-        }
+       }
     },
     scale: {
         mode: Phaser.Scale.FIT,
