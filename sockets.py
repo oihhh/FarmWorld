@@ -1,5 +1,6 @@
-from flask_socketio import emit, join_room, leave_room
-from flask import request
+from flask_socketio import emit, join_room, leave_room, disconnect
+from flask import request, session 
+
 
 current_players_data = {}
 DEFAULT_AREA = 'skyWorld__hub'
@@ -12,6 +13,10 @@ def register_sockets_events(socketio):
 
     @socketio.on('connect')
     def handleConnect():
+        if 'username' not in session:
+            disconnect()
+            return
+        
         join_room(DEFAULT_AREA)
         current_players_data[request.sid] = {
             'x': 750,
