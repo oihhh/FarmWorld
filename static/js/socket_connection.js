@@ -1,5 +1,5 @@
 export let socket;
-let remote_players = {} //this does not include the client
+export let remote_players = {}; //this does not include the client
 
 export function setupSocket(scene) {
     // only connect once, socket survives across scene switches
