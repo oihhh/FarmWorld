@@ -1,5 +1,5 @@
 import { handle_player_controls } from "./player_movement.js";
-import { setupSocket, socket } from "./socket_connection.js"
+import { setupSocket, socket, remote_players } from "./socket_connection.js"
 
 class skyWorld_hub extends Phaser.Scene {
     constructor() {
@@ -18,10 +18,21 @@ class skyWorld_hub extends Phaser.Scene {
     create() {
 
         setupSocket(this);
+        this.farmPortal = this.add.zone(750, 200, 32, 32);        
         this.add.image(750, 200, 'portal_to_farm')
         this.add.image(750, 750, 'skyWorld_hub_frame')
         this.add.image(750, 750, 'spawn_rune_circle')
         this.player = this.physics.add.sprite(750, 730, 'player_down');
+        this.physics.add.existing(this.farmPortal);
+        this.physics.add.overlap(this.player, this.farmPortal, () => {
+            for (const sid in remote_players) {
+                remote_players[sid].destroy();
+                delete remote_players[sid];
+            }
+            socket.emit('area_changed', {area: 'farm_world'})
+            this.scene.start('farmWorld_farm');
+        })
+
 
         this.physics.world.setBounds(0, 0, 1500, 1500);
         this.cameras.main.setBounds(0, 0, 1500, 1500);
