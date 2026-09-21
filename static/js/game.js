@@ -1,3 +1,4 @@
+import { farmWorld_farm } from "./farmWorld_farm.js";
 import { skyWorld_hub } from "./skyWorld_hub.js";
 
 const config = {
@@ -16,7 +17,7 @@ const config = {
         width: 700,
         height: 300,
     },
-    scene: [skyWorld_hub]
+    scene: [skyWorld_hub, farmWorld_farm]
 };
 
 new Phaser.Game(config);
