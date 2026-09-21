@@ -2,7 +2,7 @@ import { handle_player_controls } from "./player_movement.js";
 import { setupSocket, socket, remote_players } from "./socket_connection.js"
 
 
-class farmWorld_farm extends Phaser.scene {
+class farmWorld_farm extends Phaser.Scene {
     constructor() {
         super('farmWorld_farm')
     }
