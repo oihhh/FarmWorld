@@ -4,6 +4,9 @@ export let remote_players = {}; //this does not include the client
 export function setupSocket(scene) {
     // only connect once, socket survives across scene switches
     if (socket) {
+        socket.off('player_joined');
+        socket.off('update_remote_players');
+        socket.off('player_left');
     // just re-bind listeners' scene reference by re-registering them
     } else {
       socket = io();

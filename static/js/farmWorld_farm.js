@@ -27,7 +27,7 @@ class farmWorld_farm extends Phaser.Scene {
                 delete remote_players[sid];
             }
             socket.emit('area_changed', {area: 'skyWorld_hub'})
-            this.scene.start('SkyWorld_hub');
+            this.scene.start('skyWorld_hub');
         })
 
         this.physics.world.setBounds(0, 0, 1500, 1500);
