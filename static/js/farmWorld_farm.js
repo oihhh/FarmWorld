@@ -19,7 +19,7 @@ class farmWorld_farm extends Phaser.Scene {
         
         setupSocket(this);
         this.player = this.physics.add.sprite(750, 730, 'player_down');
-        this.skyWorldPortal = this.add.zone(750, 750, 32, 32);     
+        this.skyWorldPortal = this.add.zone(750, 800, 32, 32);     
         this.physics.add.existing(this.skyWorldPortal);
         this.physics.add.overlap(this.player, this.skyWorldPortal, () => {
             for (const sid in remote_players) {
