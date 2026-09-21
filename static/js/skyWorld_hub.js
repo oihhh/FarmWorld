@@ -18,7 +18,7 @@ class skyWorld_hub extends Phaser.Scene {
     create() {
 
         setupSocket(this);
-        this.add.image(750, 500, 'portal_to_farm')
+        this.add.image(750, 200, 'portal_to_farm')
         this.add.image(750, 750, 'skyWorld_hub_frame')
         this.add.image(750, 750, 'spawn_rune_circle')
         this.player = this.physics.add.sprite(750, 730, 'player_down');
