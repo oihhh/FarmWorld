@@ -29,6 +29,26 @@ class farmWorld_farm extends Phaser.Scene {
             this.scene.start('SkyWorld_hub');
         })
 
+        this.physics.world.setBounds(0, 0, 1500, 1500);
+        this.cameras.main.setBounds(0, 0, 1500, 1500);
+        this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+        this.cameras.main.setDeadzone(120, 80);
+
+        this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.inputVector = { x:0, y:0 };
+
+        this.maxSpeed = 200;
+        this.smoothing = 8;
+
+        //player bobbing animation variables
+        this.bobTimer = 0;
+        this.baseScaleY = 1;
+        this.baseScaleX = 1;
+
+        this.last_emit = 0;
+        this.playerDirection = 'down'
+
     }
 
     update(time, delta) {
