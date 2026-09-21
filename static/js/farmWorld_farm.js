@@ -4,7 +4,7 @@ import { setupSocket, socket, remote_players } from "./socket_connection.js"
 
 class farmWorld_farm extends Phaser.scene {
     constructor() {
-        super('skyWorld_farm')
+        super('farmWorld_farm')
     }
 
     preload() {
