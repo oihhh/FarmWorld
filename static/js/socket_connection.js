@@ -28,9 +28,9 @@ function spawnRemotePlayers(scene, sid, data) { //This Function dumps all thhe s
 }  
 
 function removeRemotePlayer(scene, data) {
-    if (remote_players[data.id]) {
-        remote_players[data.id].destroy();
-        delete remote_players[data.id];
+    if (remote_players[data.sid]) {
+        remote_players[data.sid].destroy();
+        delete remote_players[data.sid];
     }
 }
 
