@@ -59,6 +59,7 @@ def register_sockets_events(socketio):
         join_payload = dict(current_players_data[request.sid])
         join_payload['sid'] = request.sid
         emit('player_joined', join_payload, room=new_area, include_self=False)
+        print(f"debug: {current_players_data}")
         
 
 
