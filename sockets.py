@@ -30,7 +30,7 @@ def register_sockets_events(socketio):
     def updateClientsData(data):
         if request.sid not in current_players_data:
             return 
-        area = current_players_data[request.sid].get('area', DEFAULT_AREA)
+        area = current_players_data[request.sid].get('area')
         current_players_data[request.sid].update(data)
         data['sid'] = request.sid
         emit('update_remote_players', data, room=area, include_self=False)
@@ -58,8 +58,8 @@ def register_sockets_events(socketio):
         current_players_data[request.sid]['area'] = new_area
         join_payload = dict(current_players_data[request.sid])
         join_payload['sid'] = request.sid
-        emit('player_joined', join_payload, room=new_area, include_self=False)
         print(f"debug: {current_players_data}")
+        emit('player_joined', join_payload, room=new_area, include_self=False)
         
 
 
