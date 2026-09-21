@@ -29,7 +29,7 @@ class skyWorld_hub extends Phaser.Scene {
                 remote_players[sid].destroy();
                 delete remote_players[sid];
             }
-            socket.emit('area_changed', {area: 'farm_world'})
+            socket.emit('change_area', {area: 'farm_world'})
             this.scene.start('farmWorld_farm');
         })
 
