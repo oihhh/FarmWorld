@@ -42,6 +42,26 @@ def register_sockets_events(socketio):
             del current_players_data[request.sid]
             emit('player_left', {'id': request.sid}, room=area)
 
+    @socketio.on('cahnge_area')
+    def handle_change_area(area):
+        if request.sid not in current_players_data:
+            return
+
+        old_area = current_players_data[request.sid].get('area')
+        new_area = area['area']
+
+        if old_area:
+            leave_room(old_area)
+            emit('player_left', {'sid': request.sid}, room=old_area)
+
+        join_room(new_area)
+        current_players_data[request.sid]['area'] = new_area
+        join_payload = dict(current_players_data[request.sid])
+        join_payload['sid'] = request.sid
+        emit('player_joined', join_payload, room=new_area, include_self=False)
+        
+
+
 
 
 
