@@ -42,7 +42,7 @@ def register_sockets_events(socketio):
             del current_players_data[request.sid]
             emit('player_left', {'id': request.sid}, room=area)
 
-    @socketio.on('cahnge_area')
+    @socketio.on('change_area')
     def handle_change_area(area):
         if request.sid not in current_players_data:
             return
