@@ -1,4 +1,4 @@
-export const TILE_SIZE = 30;
+const TILE_SIZE = 30;
 const GRID_WIDTH = 100; 
 const GRID_HEIGHT = 100;
 const DEFAULT_TILE = 'grass';
@@ -69,4 +69,4 @@ class TileGrid {
     }
 }
 
-module.exports = { TileGrid, TILE_SIZE, GRID_WIDTH, GRID_HEIGHT };
+export { TileGrid, TILE_SIZE, GRID_WIDTH, GRID_HEIGHT };
