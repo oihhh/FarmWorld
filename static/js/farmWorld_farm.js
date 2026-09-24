@@ -1,6 +1,6 @@
 import { handle_player_controls } from "./player_movement.js";
 import { setupSocket, socket, remote_players } from "./socket_connection.js"
-
+import { TileGrid, TILE_SIZE  } from "./tileGrid.js";
 
 class farmWorld_farm extends Phaser.Scene {
     constructor() {
@@ -50,10 +50,27 @@ class farmWorld_farm extends Phaser.Scene {
         this.last_emit = 0;
         this.playerDirection = 'down'
 
+        // Tiling System
+        this.tileGrid = new TileGrid();
+        this.buildMode = false;
+
+        this.input.keyboard.on('keydown-E', () => {
+            this.buildMode = !this.buildMode;
+            if (!this.buildMode) this.highlightBox.setVisible(false);
+        });
+
+        this.highlightBox = this.add.rectangle(0, 0, TILE_SIZE, TILE_SIZE, 0x00ff00, 0.35);
+        this.highlightBox.setStrokeStyle(2, 0x00ff00);
+        this.highlightBox.setVisible(false);
+        this.highlightBox.setDepth(999); // draw above ground tiles
     }
 
     update(time, delta) {
         handle_player_controls(this, delta)
+
+        if (this.buildMode) {
+            this.updateTileHighlight();
+        }
 
         if (time - this.last_emit > 50) {
             socket.emit('update_clients_data', {
@@ -62,6 +79,28 @@ class farmWorld_farm extends Phaser.Scene {
                 direction: this.playerDirection
             });
             this.last_emit = time;
+        }
+     
+    }
+    updateTileHighlight() {
+        const { x: gx, y: gy } = this.tileGrid.worldToGrid(this.player.x, this.player.y);
+        const target = this.getFacingTile(gx, gy, this.playerDirection);
+        if (!this.tileGrid.inBounds(target.x, target.y)) {
+            this.highlightBox.setVisible(false);
+            return; 
+        }
+        const { px, py } = this.tileGrid.gridToWorld(target.x, target.y);
+        this.highlightBox.setPosition(px + TILE_SIZE / 2, py + TILE_SIZE / 2);
+        this.highlightBox.setVisible(true);
+    }
+
+    getFacingTile(gx, gy, direction) {
+        switch (direction) {
+            case 'up':    return { x: gx,     y: gy - 1 };
+            case 'down':  return { x: gx,     y: gy + 1 };
+            case 'left':  return { x: gx - 1, y: gy };
+            case 'right': return { x: gx + 1, y: gy };
+            default:      return { x: gx,     y: gy };
         }
     }
 }
