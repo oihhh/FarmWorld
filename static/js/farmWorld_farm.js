@@ -50,6 +50,7 @@ class farmWorld_farm extends Phaser.Scene {
         this.last_emit = 0;
         this.playerDirection = 'down'
 
+
         // Tiling System
         this.tileGrid = new TileGrid();
         this.buildMode = false;
@@ -58,7 +59,8 @@ class farmWorld_farm extends Phaser.Scene {
             this.buildMode = !this.buildMode;
             if (!this.buildMode) this.highlightBox.setVisible(false);
         });
-
+        this.feetDot = this.add.circle(0, 0, 4, 0xff0000);
+        this.feetDot.setDepth(999);
         this.highlightBox = this.add.rectangle(0, 0, TILE_SIZE, TILE_SIZE, 0x00ff00, 0.35);
         this.highlightBox.setStrokeStyle(2, 0x00ff00);
         this.highlightBox.setVisible(false);
@@ -67,6 +69,9 @@ class farmWorld_farm extends Phaser.Scene {
 
     update(time, delta) {
         handle_player_controls(this, delta)
+
+        const feet = this.getFeetPosition();
+        this.feetDot.setPosition(feet.x, feet.y);
 
         if (this.buildMode) {
             this.updateTileHighlight();
@@ -82,8 +87,17 @@ class farmWorld_farm extends Phaser.Scene {
         }
      
     }
+
+    getFeetPosition() {
+        return {
+            x: this.player.x,
+            y: this.player.y + (this.player.height / 2)
+        };
+    }
+
     updateTileHighlight() {
-        const { x: gx, y: gy } = this.tileGrid.worldToGrid(this.player.x, this.player.y);
+        const feet = this.getFeetPosition();
+        const { x: gx, y: gy } = this.tileGrid.worldToGrid(feet.x, feet.y);
         const target = this.getFacingTile(gx, gy, this.playerDirection);
         if (!this.tileGrid.inBounds(target.x, target.y)) {
             this.highlightBox.setVisible(false);
@@ -103,6 +117,7 @@ class farmWorld_farm extends Phaser.Scene {
             default:      return { x: gx,     y: gy };
         }
     }
+
 }
 
 
