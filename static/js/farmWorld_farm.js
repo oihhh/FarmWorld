@@ -19,9 +19,15 @@ class farmWorld_farm extends Phaser.Scene {
     create() {
         
         setupSocket(this);
+
+        this.table = this.physics.add.staticSprite(750, 650, 'table');
+        this.table.body.setSize(81, 32);
+        this.table.body.setOffset(10, 21);
+        this.physics.add.collider(this.player, this.table);
+        
         this.player = this.physics.add.sprite(750, 730, 'player_down');
         this.player.body.setSize(20, 14);
-        this.player.body.setOffset(0, 25)
+        this.player.body.setOffset(0, 30)
         this.skyWorldPortal = this.add.zone(750, 800, 32, 32);     
         this.physics.add.existing(this.skyWorldPortal);
         this.physics.add.overlap(this.player, this.skyWorldPortal, () => {
@@ -39,13 +45,7 @@ class farmWorld_farm extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, 1500, 1500);
         this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
         this.cameras.main.setDeadzone(120, 80);
-
-        this.table = this.physics.add.staticSprite(750, 650, 'table');
-        this.table.body.setSize(81, 32);
-        this.table.body.setOffset(10, 21);
-        this.physics.add.collider(this.player, this.table);
         
-
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.inputVector = { x:0, y:0 };
