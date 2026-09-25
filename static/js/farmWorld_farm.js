@@ -12,6 +12,7 @@ class farmWorld_farm extends Phaser.Scene {
         this.load.image('player_down', '/static/assets/player_down.png');
         this.load.image('player_up', '/static/assets/player_up.png');
         this.load.image('player_left', '/static/assets/player_left.png');
+        this.load.image('table', '/static/assets/outdoor_table.png');
         
     }
 
@@ -34,6 +35,9 @@ class farmWorld_farm extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, 1500, 1500);
         this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
         this.cameras.main.setDeadzone(120, 80);
+
+        this.table = this.physics.add.staticSprite(750, 650, 'table');
+        this.physics.add.collider(this.player, this.table);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
