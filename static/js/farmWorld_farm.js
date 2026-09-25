@@ -30,14 +30,19 @@ class farmWorld_farm extends Phaser.Scene {
             socket.emit('change_area', {area: 'skyWorld_hub'})
             this.scene.start('skyWorld_hub');
         })
-
+        
+        this.physics.world.createDebugGraphic();
+        
         this.physics.world.setBounds(0, 0, 1500, 1500);
         this.cameras.main.setBounds(0, 0, 1500, 1500);
         this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
         this.cameras.main.setDeadzone(120, 80);
 
         this.table = this.physics.add.staticSprite(750, 650, 'table');
+        this.table.body.setSize(81, 44);
+        this.table.body.setOffset(20, 10);
         this.physics.add.collider(this.player, this.table);
+        
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
