@@ -39,8 +39,8 @@ class farmWorld_farm extends Phaser.Scene {
         this.cameras.main.setDeadzone(120, 80);
 
         this.table = this.physics.add.staticSprite(750, 650, 'table');
-        this.table.body.setSize(81, 38);
-        this.table.body.setOffset(15, 17);
+        this.table.body.setSize(81, 35);
+        this.table.body.setOffset(11, 19);
         this.physics.add.collider(this.player, this.table);
         
 
