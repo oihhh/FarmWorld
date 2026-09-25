@@ -32,7 +32,7 @@ class farmWorld_farm extends Phaser.Scene {
         })
         
         this.physics.world.createDebugGraphic();
-        
+
         this.physics.world.setBounds(0, 0, 1500, 1500);
         this.cameras.main.setBounds(0, 0, 1500, 1500);
         this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
@@ -40,7 +40,7 @@ class farmWorld_farm extends Phaser.Scene {
 
         this.table = this.physics.add.staticSprite(750, 650, 'table');
         this.table.body.setSize(81, 44);
-        this.table.body.setOffset(20, 10);
+        this.table.body.setOffset(15, 17);
         this.physics.add.collider(this.player, this.table);
         
 
