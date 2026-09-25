@@ -22,12 +22,12 @@ class farmWorld_farm extends Phaser.Scene {
 
         this.table = this.physics.add.staticSprite(750, 650, 'table');
         this.table.body.setSize(81, 32);
-        this.table.body.setOffset(10, 21);
-        this.physics.add.collider(this.player, this.table);
+        this.table.body.setOffset(10, 23);
         
         this.player = this.physics.add.sprite(750, 730, 'player_down');
         this.player.body.setSize(20, 14);
-        this.player.body.setOffset(0, 30)
+        this.player.body.setOffset(0, 32)
+        this.physics.add.collider(this.player, this.table);
         this.skyWorldPortal = this.add.zone(750, 800, 32, 32);     
         this.physics.add.existing(this.skyWorldPortal);
         this.physics.add.overlap(this.player, this.skyWorldPortal, () => {
