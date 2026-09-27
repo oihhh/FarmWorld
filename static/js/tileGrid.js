@@ -1,7 +1,7 @@
 const TILE_SIZE = 30;
 const GRID_WIDTH = 100; 
 const GRID_HEIGHT = 100;
-const DEFAULT_TILE = 'grass';
+const DEFAULT_TILE = 'unclaimed';
 
 class TileGrid {
     constructor(width = GRID_WIDTH, height = GRID_HEIGHT, defaultTile = DEFAULT_TILE) {
@@ -69,4 +69,4 @@ class TileGrid {
     }
 }
 
-export { TileGrid, TILE_SIZE, GRID_WIDTH, GRID_HEIGHT };
+export { TileGrid, TILE_SIZE, GRID_WIDTH, GRID_HEIGHT };//.
