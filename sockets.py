@@ -3,7 +3,7 @@ from flask import request, session
 
 
 current_players_data = {}
-DEFAULT_AREA = 'skyWorld__hub'
+DEFAULT_AREA = 'skyWorld_hub'
 
 def get_players_in_area(area, exclude_sid=None):
     return{sid: data for sid, data in current_players_data.items() if data.get('area') == area and sid != exclude_sid}

@@ -8,13 +8,13 @@ export function setupSocket(scene) {
         socket.off('update_remote_players');
         socket.off('player_left');
     // just re-bind listeners' scene reference by re-registering them
-    } else {
+    } else {  
       socket = io();
     }
     socket.on('player_joined', (players_data) => handlePlayerJoined(scene, players_data));
     socket.on('update_remote_players', (players_data) => updateRemotePlayers(scene, players_data));
     socket.on('player_left', (players_data) => removeRemotePlayer(scene, players_data));
-}
+} 
  
 function handlePlayerJoined(scene, data) { //This function goes through the list of players server sent and fetch it to spawRemotePllayers
     for (const sid in data) {               
