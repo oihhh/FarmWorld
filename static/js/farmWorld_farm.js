@@ -16,7 +16,8 @@ class farmWorld_farm extends Phaser.Scene {
         
     }
 
-    create() {
+    create() { 
+        this.changingArea = false;
         
         setupSocket(this);
 
@@ -31,8 +32,10 @@ class farmWorld_farm extends Phaser.Scene {
         this.skyWorldPortal = this.add.zone(750, 800, 32, 32);     
         this.physics.add.existing(this.skyWorldPortal);
         this.physics.add.overlap(this.player, this.skyWorldPortal, () => {
+            if (this.changingArea) return;
+            this.changingArea = true;
             for (const sid in remote_players) {
-                remote_players[sid].destroy();
+                remote_players[sid].destroy();  //This destroy client cache remoteplayers data so they dont render in new area 
                 delete remote_players[sid];
             }
             socket.emit('change_area', {area: 'skyWorld_hub'})
@@ -133,3 +136,6 @@ class farmWorld_farm extends Phaser.Scene {
 
 
 export { farmWorld_farm }
+
+
+
