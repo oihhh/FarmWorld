@@ -113,12 +113,12 @@ class farmWorld_farm extends Phaser.Scene {
         const feet = this.getFeetPosition();
         const { x: gx, y: gy } = this.tileGrid.worldToGrid(feet.x, feet.y);
 
-        if (!this.tileGrid.inBounds(target.x, target.y)) {
+        if (!this.tileGrid.inBounds(gx, gy)) {
             this.highlightBox.setVisible(false);
             return; 
         }
-        
-        const { px, py } = this.tileGrid.gridToWorld(target.x, target.y);
+
+        const { px, py } = this.tileGrid.gridToWorld(gx, gy);
         this.highlightBox.setPosition(px + TILE_SIZE / 2, py + TILE_SIZE / 2);
         this.highlightBox.setVisible(true);
     }
