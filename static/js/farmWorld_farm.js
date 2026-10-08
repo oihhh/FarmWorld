@@ -112,25 +112,17 @@ class farmWorld_farm extends Phaser.Scene {
     updateTileHighlight() {
         const feet = this.getFeetPosition();
         const { x: gx, y: gy } = this.tileGrid.worldToGrid(feet.x, feet.y);
-        const target = this.getFacingTile(gx, gy, this.playerDirection);
+
         if (!this.tileGrid.inBounds(target.x, target.y)) {
             this.highlightBox.setVisible(false);
             return; 
         }
+        
         const { px, py } = this.tileGrid.gridToWorld(target.x, target.y);
         this.highlightBox.setPosition(px + TILE_SIZE / 2, py + TILE_SIZE / 2);
         this.highlightBox.setVisible(true);
     }
 
-    getFacingTile(gx, gy, direction) {
-        switch (direction) {
-            case 'up':    return { x: gx,     y: gy - 1 };
-            case 'down':  return { x: gx,     y: gy + 1 };
-            case 'left':  return { x: gx - 1, y: gy };
-            case 'right': return { x: gx + 1, y: gy };
-            default:      return { x: gx,     y: gy };
-        }
-    }
 
 }
 
