@@ -105,7 +105,7 @@ class farmWorld_farm extends Phaser.Scene {
     getFeetPosition() {
         return {
             x: this.player.x,
-            y: this.player.y + (this.player.height / 2.5)
+            y: this.player.y + (this.player.height / 3)
         };
     }
 
