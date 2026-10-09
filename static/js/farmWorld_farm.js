@@ -20,15 +20,42 @@ class farmWorld_farm extends Phaser.Scene {
         this.changingArea = false;
         
         setupSocket(this);
-
-        this.table = this.physics.add.staticSprite(750, 650, 'table');
-        this.table.body.setSize(81, 32);
-        this.table.body.setOffset(10, 25);
         
         this.player = this.physics.add.sprite(750, 730, 'player_down');
         this.player.body.setSize(20, 14);
         this.player.body.setOffset(0, 33)
-        this.physics.add.collider(this.player, this.table);
+        
+        this.physics.world.setBounds(0, 0, 1500, 1500);
+        this.cameras.main.setBounds(0, 0, 1500, 1500);
+        this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+        this.cameras.main.setDeadzone(120, 80);
+
+        this.physics.world.createDebugGraphic();
+
+        this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.input.keyboard.on('keydown-E', () => {
+            this.buildMode = !this.buildMode;
+            if (!this.buildMode) this.highlightBox.setVisible(false);
+        });
+        this.feetDot = this.add.circle(0, 0, 4, 0xff0000);
+        this.feetDot.setDepth(999);
+        this.highlightBox = this.add.rectangle(0, 0, TILE_SIZE, TILE_SIZE, 0x00ff00, 0.35);
+        this.highlightBox.setStrokeStyle(2, 0x00ff00);
+        this.highlightBox.setVisible(false);
+        this.highlightBox.setDepth(999); // draw above ground tiles
+
+        // Tiling System
+        this.tileGrid = new TileGrid();
+        this.buildMode = false;
+         
+        this.maxSpeed = 200;
+        this.smoothing = 8;
+        this.last_emit = 0;
+        this.playerDirection = 'down'
+
+
+        //PORTAL TO SKY_WORLD
         this.skyWorldPortal = this.add.zone(750, 800, 32, 32);     
         this.physics.add.existing(this.skyWorldPortal);
         this.physics.add.overlap(this.player, this.skyWorldPortal, () => {
@@ -41,44 +68,7 @@ class farmWorld_farm extends Phaser.Scene {
             socket.emit('change_area', {area: 'skyWorld_hub'})
             this.scene.start('skyWorld_hub');
         })
-         
-        this.physics.world.createDebugGraphic();
-
-        this.physics.world.setBounds(0, 0, 1500, 1500);
-        this.cameras.main.setBounds(0, 0, 1500, 1500);
-        this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
-        this.cameras.main.setDeadzone(120, 80);
         
-        this.cursors = this.input.keyboard.createCursorKeys();
-
-        this.inputVector = { x:0, y:0 };
-
-        this.maxSpeed = 200;
-        this.smoothing = 8;
-
-        //player bobbing animation variables
-        this.bobTimer = 0;
-        this.baseScaleY = 1;
-        this.baseScaleX = 1;
-
-        this.last_emit = 0;
-        this.playerDirection = 'down'
-
-
-        // Tiling System
-        this.tileGrid = new TileGrid();
-        this.buildMode = false;
-
-        this.input.keyboard.on('keydown-E', () => {
-            this.buildMode = !this.buildMode;
-            if (!this.buildMode) this.highlightBox.setVisible(false);
-        });
-        this.feetDot = this.add.circle(0, 0, 4, 0xff0000);
-        this.feetDot.setDepth(999);
-        this.highlightBox = this.add.rectangle(0, 0, TILE_SIZE, TILE_SIZE, 0x00ff00, 0.35);
-        this.highlightBox.setStrokeStyle(2, 0x00ff00);
-        this.highlightBox.setVisible(false);
-        this.highlightBox.setDepth(999); // draw above ground tiles
     }
 
     update(time, delta) {
