@@ -53,6 +53,7 @@ class farmWorld_farm extends Phaser.Scene {
         this.smoothing = 8;
         this.last_emit = 0;
         this.playerDirection = 'down'
+        this.inputVector = new Phaser.Math.Vector2(0, 0);
 
 
         //PORTAL TO SKY_WORLD
