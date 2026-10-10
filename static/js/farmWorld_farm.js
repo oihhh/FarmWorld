@@ -45,7 +45,7 @@ class farmWorld_farm extends Phaser.Scene {
                 const feet = this.getFeetPosition();
                 const {x: gx, y: gy} = this.tileGrid.worldToGrid(feet.x, feet.y)
                 const { px, py } = this.tileGrid.gridToWorld(gx, gy);
-                this.add.image(px, py, 'grass')
+                this.add.image(px + TILE_SIZE/2, py + TILE_SIZE/2 , 'grass')
 
             }
         })
