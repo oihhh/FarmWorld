@@ -13,6 +13,7 @@ class farmWorld_farm extends Phaser.Scene {
         this.load.image('player_up', '/static/assets/player_up.png');
         this.load.image('player_left', '/static/assets/player_left.png');
         this.load.image('table', '/static/assets/outdoor_table.png');
+        this.load.image('grass', '/static/assets/grass_tile_test.png')
         
     }
 
@@ -38,6 +39,17 @@ class farmWorld_farm extends Phaser.Scene {
             this.buildMode = !this.buildMode;
             if (!this.buildMode) this.highlightBox.setVisible(false);
         });
+
+        this.input.keyboard.on('keydown-F', () => {
+            if (this.buildMode) {
+                const feet = this.getFeetPosition();
+                const {x: gx, y: gy} = this.tileGrid.worldToGrid(feet.x, feet.y)
+                const { px, py } = this.tileGrid.gridToWorld(gx, gy);
+                this.add.image(px, py, 'grass')
+
+            }
+        })
+
         this.feetDot = this.add.circle(0, 0, 4, 0xff0000);
         this.feetDot.setDepth(999);
         this.highlightBox = this.add.rectangle(0, 0, TILE_SIZE, TILE_SIZE, 0x00ff00, 0.35);
@@ -110,8 +122,9 @@ class farmWorld_farm extends Phaser.Scene {
         }
 
         const { px, py } = this.tileGrid.gridToWorld(gx, gy);
-        this.highlightBox.setPosition(px + TILE_SIZE / 2, py + TILE_SIZE / 2);
-        this.highlightBox.setVisible(true);
+        this.highlightBox.setPosition(px + TILE_SIZE / 2, py + TILE_SIZE / 2); // rectangles default to origin (0.5, 0.5), so position = center, not top-left
+        this.highlightBox.setVisible(true);                                    // using px, py directly would shift the highlight up and left by half a tile
+                                                                               // adding TILE_SIZE / 2 moves the center to the middle of the tile
     }
 
 
